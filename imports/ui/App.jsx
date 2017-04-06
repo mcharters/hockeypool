@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import { createContainer } from 'meteor/react-meteor-data';
 
@@ -6,7 +6,7 @@ import { Teams } from '../api/teams.js';
 import Team from './Team.jsx';
 import Admin from './Admin.jsx';
 
-const Root = (props) => (
+const Root = props => (
   <div
     style={{
       display: 'flex',
@@ -15,7 +15,7 @@ const Root = (props) => (
   />
 );
 
-const Sidebar = (props) => (
+const Sidebar = props => (
   <div
     style={{
       width: '20vw',
@@ -27,11 +27,11 @@ const Sidebar = (props) => (
   />
 );
 
-const SidebarItem = (props) => (
+const SidebarItem = props => (
   <div style={{ padding: '5px 10px' }} {...props} />
 );
 
-const Main = (props) => (
+const Main = props => (
   <div
     style={{
       flex: 1,
@@ -41,7 +41,7 @@ const Main = (props) => (
   >
     <div style={{ padding: '20px' }} {...props} />
   </div>
-)
+);
 
 const App = ({ teams }) => (
   <Router>
@@ -70,6 +70,10 @@ const App = ({ teams }) => (
     </Root>
   </Router>
 );
+
+App.propTypes = {
+  teams: PropTypes.arrayOf(PropTypes.object),
+};
 
 export default createContainer(() => ({
   teams: Teams.find({ playoffTeam: true }).fetch(),

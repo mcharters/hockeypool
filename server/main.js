@@ -19,7 +19,7 @@ Meteor.startup(() => {
   // add some conference and playoff info to teams
   standingsResult.data.records.forEach((standings) => {
     if (standings.standingsType === 'wildCard') {
-      for (let i=0; i<2; i++) {
+      for (let i = 0; i < 2; i += 1) {
         Teams.update(
           { teamId: standings.teamRecords[i].team.id },
           {
@@ -28,8 +28,8 @@ Meteor.startup(() => {
               conference: standings.conference.name,
               division: 'Wildcard',
               position: i,
-            }
-          }
+            },
+          },
         );
       }
     } else {
@@ -42,8 +42,8 @@ Meteor.startup(() => {
               conference: standings.conference.name,
               division: standings.division.name,
               position: i,
-            }
-          }
+            },
+          },
         );
       });
     }
@@ -54,9 +54,9 @@ Meteor.startup(() => {
   playoffTeams.forEach((team) => {
     const playersResult = HTTP.call('GET', `http://www.nhl.com/stats/rest/grouped/skaters/basic/season/skatersummary?cayenneExp=seasonId=20162017%20and%20gameTypeId=2%20and%20teamId=${team.teamId}&factCayenneExp=gamesPlayed%3E=1&sort=[{%22property%22:%22points%22,%22direction%22:%22DESC%22},{%22property%22:%22goals%22,%22direction%22:%22DESC%22},{%22property%22:%22assists%22,%22direction%22:%22DESC%22}]`);
     playersResult.data.data.forEach((player) => {
-      player.teamId = team._id;
-      Players.insert(player);
-    })
+      const newPlayer = player;
+      newPlayer.teamId = team._id;
+      Players.insert(newPlayer);
+    });
   });
-
 });
