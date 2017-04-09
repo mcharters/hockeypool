@@ -10,7 +10,6 @@ export default Draft;
 
 Meteor.methods({
   'draft.reset'() {
-    console.log('Resetting draft...');
     Teams.remove({});
     Players.remove({});
     Draft.remove({});

@@ -6,6 +6,7 @@ import Teams from '../api/teams.js';
 import Team from './Team.jsx';
 import Admin from './Admin.jsx';
 import Draft from './Draft.jsx';
+import AccountsUIWrapper from './AccountsUIWrapper.jsx';
 
 const Root = props => (
   <div
@@ -48,6 +49,7 @@ const App = ({ teams }) => (
   <Router>
     <Root>
       <Sidebar>
+        <AccountsUIWrapper />
         {teams.map(team => (
           <SidebarItem key={team._id}>
             <Link to={`/teams/${team._id}`}>

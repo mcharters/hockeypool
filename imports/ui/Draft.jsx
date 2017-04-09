@@ -1,8 +1,13 @@
 import React, { PropTypes } from 'react';
+import { Meteor } from 'meteor/meteor';
 import { createContainer } from 'meteor/react-meteor-data';
 import Draft from '../api/draft.js';
 
-const DraftUI = ({ draft }) => {
+const DraftUI = ({ draft, currentUser }) => {
+  if (!currentUser) {
+    return <p>Please log in or create an account to draft!</p>;
+  }
+
   if (!draft) return null;
 
   if (!draft.started) {
@@ -16,14 +21,20 @@ DraftUI.propTypes = {
   draft: PropTypes.shape({
     started: PropTypes.bool,
   }),
+  currentUser: PropTypes.shape({
+    username: PropTypes.string,
+  }),
 };
 
 DraftUI.defaultProps = {
   draft: null,
+  currentUser: null,
 };
 
 export default createContainer(() => {
   const draft = Draft.findOne();
-  if (draft) return { draft };
-  return { draft: null };
+  return {
+    draft: draft || null,
+    currentUser: Meteor.user(),
+  };
 }, DraftUI);
