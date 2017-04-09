@@ -1,7 +1,18 @@
 import React from 'react';
+import { Meteor } from 'meteor/meteor';
 
 const Admin = () => (
-  <h1>Admin</h1>
+  <div className="container">
+    <h1>Admin</h1>
+    <button
+      onClick={(e) => {
+        e.preventDefault();
+        Meteor.call('draft.reset');
+      }}
+    >
+      Reset App
+    </button>
+  </div>
 );
 
 export default Admin;

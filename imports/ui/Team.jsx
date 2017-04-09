@@ -1,15 +1,15 @@
 import React, { PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
-import { Players } from '../api/players.js';
+import Players from '../api/players.js';
 
 const Team = ({ team, players }) => (
   <div>
     <h1>{team.teamFullName}</h1>
-    <ul>
+    <table>
       {players.map(player => (
-        <li key={player._id}>{player.playerName}</li>
+        <tr key={player._id}><td>{player.playerName}</td></tr>
       ))}
-    </ul>
+    </table>
   </div>
 );
 

@@ -2,9 +2,10 @@ import React, { PropTypes } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import { createContainer } from 'meteor/react-meteor-data';
 
-import { Teams } from '../api/teams.js';
+import Teams from '../api/teams.js';
 import Team from './Team.jsx';
 import Admin from './Admin.jsx';
+import Draft from './Draft.jsx';
 
 const Root = props => (
   <div
@@ -61,11 +62,13 @@ const App = ({ teams }) => (
         <Route
           path="/teams/:teamId"
           render={({ match }) => (
+            teams && teams.length > 0 &&
             <Team
               team={teams.find(team => team._id === match.params.teamId)}
             />
           )}
         />
+        <Draft />
       </Main>
     </Root>
   </Router>
