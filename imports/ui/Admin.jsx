@@ -52,6 +52,7 @@ const Admin = ({ users, teams }) => (
 
 Admin.propTypes = {
   users: PropTypes.arrayOf(PropTypes.object),
+  teams: PropTypes.object,
 };
 
 Admin.defaultProps = {
