@@ -21,10 +21,11 @@ const Root = props => (
 const Sidebar = props => (
   <div
     style={{
-      width: '20vw',
-      height: '100vh',
+      flex: '0 0 20em',
+      order: -1,
       overflow: 'auto',
       background: '#eee',
+      height: '100vh',
     }}
     {...props}
   />
@@ -38,8 +39,21 @@ const Main = props => (
   <div
     style={{
       flex: 1,
-      height: '100vh',
       overflow: 'auto',
+      height: '100vh',
+    }}
+  >
+    <div style={{ padding: '20px' }} {...props} />
+  </div>
+);
+
+const Secondary = props => (
+  <div
+    style={{
+      flex: '0 0 20em',
+      overflow: 'auto',
+      background: '#eee',
+      height: '100vh',
     }}
   >
     <div style={{ padding: '20px' }} {...props} />
@@ -50,9 +64,6 @@ const App = ({ teams }) => (
   <Router>
     <Root>
       <Sidebar>
-        <SidebarItem>
-          <AccountsUIWrapper />
-        </SidebarItem>
         <SidebarItem>
           <Matchup
             teams={teams}
@@ -90,12 +101,15 @@ const App = ({ teams }) => (
           render={({ match }) => (
             teams && teams.length > 0 &&
             <Team
-              team={teams.find(team => team._id === match.params.teamId)}
+              team={teams.find(team => team.teamAbbrev === match.params.teamId)}
             />
           )}
         />
-        <Draft />
       </Main>
+      <Secondary>
+        <AccountsUIWrapper />
+        <Draft />
+      </Secondary>
     </Root>
   </Router>
 );

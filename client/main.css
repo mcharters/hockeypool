@@ -2,8 +2,22 @@
 
 body {
   font-family: Arial, sans-serif;
+  font-size: 0.75em;
 }
 
 .matchup {
   padding-bottom: 10px;
+}
+
+thead {
+  font-weight: bold;
+  border-bottom: solid black 2px;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+table td {
+  border-bottom: solid black 1px;
 }

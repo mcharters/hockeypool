@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const TeamLink = ({ team, rank }) => (
   <div>
-    <Link to={`/teams/${team._id}`}>
+    <Link to={`/teams/${team.teamAbbrev}`}>
       {team.teamFullName} ({rank})
     </Link>
   </div>
