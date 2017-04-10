@@ -3,6 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import { createContainer } from 'meteor/react-meteor-data';
 import Draft from '../api/draft.js';
 import Players from '../api/players.js';
+import PlayerListItem from './PlayerListItem.jsx';
 
 const DraftUI = ({ draft, currentUser, pickingUser, round, players }) => {
   if (!currentUser) {
@@ -30,11 +31,10 @@ const DraftUI = ({ draft, currentUser, pickingUser, round, players }) => {
       <h4>My Team</h4>
       <ol>
         {players.map(player => (
-          <li key={player._id}>
-            {player.playerName} ({player.playerTeamsPlayedFor})
-          </li>
+          <PlayerListItem key={player._id} player={player} />
         ))}
       </ol>
+      <p><i>* defense</i></p>
     </div>
   );
 };

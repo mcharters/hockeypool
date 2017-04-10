@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { createContainer } from 'meteor/react-meteor-data';
 import Players from '../api/players.js';
+import PlayerListItem from './PlayerListItem.jsx';
 
 const Admin = ({ users, teams }) => (
   <div className="container">
@@ -37,9 +38,7 @@ const Admin = ({ users, teams }) => (
             <td key={user._id}>
               <ol>
                 {teams[user._id].map(player => (
-                  <li key={player._id}>
-                    {player.playerName} ({player.playerTeamsPlayedFor})
-                  </li>
+                  <PlayerListItem key={player._id} player={player} />
                 ))}
               </ol>
             </td>
@@ -52,11 +51,12 @@ const Admin = ({ users, teams }) => (
 
 Admin.propTypes = {
   users: PropTypes.arrayOf(PropTypes.object),
-  teams: PropTypes.object,
+  teams: PropTypes.objectOf(PropTypes.object),
 };
 
 Admin.defaultProps = {
   users: [],
+  teams: {},
 };
 
 export default createContainer(() => {
