@@ -1,8 +1,10 @@
 import React, { PropTypes } from 'react';
+import { Meteor } from 'meteor/meteor';
 import { createContainer } from 'meteor/react-meteor-data';
 import Players from '../api/players.js';
+import Draft from '../api/draft.js';
 
-const Team = ({ team, players }) => (
+const Team = ({ team, players, picking }) => (
   <div>
     <h1>{team.teamFullName}</h1>
     <table cellPadding="5">
@@ -30,8 +32,21 @@ const Team = ({ team, players }) => (
       </thead>
       <tbody>
         {players.map(player => (
-          <tr key={player._id}>
-            <td>{player.playerName}</td>
+          <tr key={player._id} style={player.userId ? { textDecoration: 'line-through' } : {}}>
+            {picking && !player.userId ?
+              <td>
+                <a
+                  href="#pick"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    Meteor.call('draft.pick', { playerId: player._id });
+                  }}
+                >
+                  {player.playerName}
+                </a>
+              </td> :
+              <td>{player.playerName}</td>
+            }
             <td>{player.playerPositionCode}</td>
             <td>{player.points}</td>
             <td>{player.goals}</td>
@@ -61,9 +76,20 @@ Team.propTypes = {
     teamFullName: PropTypes.string,
   }).isRequired,
   players: PropTypes.arrayOf(PropTypes.object).isRequired,
+  picking: PropTypes.bool.isRequired,
 };
 
-export default createContainer(({ team }) => ({
-  team,
-  players: Players.find({ teamId: team._id }, { sort: { points: -1 } }).fetch(),
-}), Team);
+export default createContainer(({ team }) => {
+  const draft = Draft.findOne();
+  let picking = false;
+  if (draft && draft.order) {
+    const pickId = draft.order[draft.pick];
+    picking = Meteor.userId() === pickId;
+  }
+
+  return {
+    team,
+    players: Players.find({ teamId: team._id }, { sort: { points: -1 } }).fetch(),
+    picking,
+  };
+}, Team);

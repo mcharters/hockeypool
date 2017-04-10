@@ -79,6 +79,31 @@ Meteor.methods({
       users[j] = tj;
     }
 
-    Draft.update({}, { $set: { started: true, pick: 0, order: users } });
+    Draft.update({}, { $set: { started: true, pick: 0, order: users, snake: false, round: 1 } });
+  },
+  'draft.pick'({ playerId }) {
+    // pick the player
+    const count = Players.find({ userId: this.userId }).count();
+    Players.update(
+      { _id: playerId },
+      {
+        $set: {
+          userId: this.userId,
+          selected: count + 1,
+        },
+      },
+    );
+
+    const draft = Draft.findOne();
+    let snake = draft.snake;
+    let next = (snake ? draft.pick - 1 : draft.pick + 1);
+    let round = draft.round;
+    if (next < 0 || next === draft.order.length) {
+      round += 1;
+      snake = !snake;
+      next = (snake ? next - 1 : next + 1);
+    }
+
+    Draft.update({}, { $set: { pick: next, snake, round } });
   },
 });
