@@ -21,6 +21,7 @@ const Vs = ({ high, low, teams }) => {
   const lowRank = teams.findIndex(t => t._id === low._id) + 1;
 
   return (
+    high && low &&
     <div className="matchup">
       <TeamLink team={high} rank={highRank} />
       <div>vs.</div>

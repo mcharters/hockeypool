@@ -13,12 +13,25 @@ const Admin = ({ users }) => (
     >
       Reset App
     </button>
-    <h2>Active Users</h2>
-    <ul>
-      {users && users.map(user => (
-        <li key={user._id}>{user.username}</li>
-      ))}
-    </ul>
+    <button
+      onClick={(e) => {
+        e.preventDefault();
+        Meteor.call('draft.start');
+      }}
+    >
+      Start Draft
+    </button>
+    <h2>Teams</h2>
+    <table cellPadding="5">
+      <thead>
+        <tr>
+          {users && users.map(user => (
+            <td key={user._id}>{user.username}</td>
+          ))}
+        </tr>
+      </thead>
+      <tbody />
+    </table>
   </div>
 );
 

@@ -68,4 +68,17 @@ Meteor.methods({
     // create draft
     Draft.insert({ started: false });
   },
+  'draft.start'() {
+    // pick draft order
+    const users = Meteor.users.find().fetch().map(user => user._id);
+    for (let i = users.length - 1; i >= 0; i -= 1) {
+      const j = Math.floor(Math.random() * (i + 1));
+      const ti = users[i];
+      const tj = users[j];
+      users[i] = ti;
+      users[j] = tj;
+    }
+
+    Draft.update({}, { $set: { started: true, pick: 0, order: users } });
+  },
 });
