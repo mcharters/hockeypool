@@ -1,11 +1,12 @@
 import React, { PropTypes } from 'react';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { createContainer } from 'meteor/react-meteor-data';
 
 import Teams from '../api/teams.js';
 import Team from './Team.jsx';
 import Admin from './Admin.jsx';
 import Draft from './Draft.jsx';
+import Matchup from './Matchup.jsx';
 import AccountsUIWrapper from './AccountsUIWrapper.jsx';
 
 const Root = props => (
@@ -49,14 +50,37 @@ const App = ({ teams }) => (
   <Router>
     <Root>
       <Sidebar>
-        <AccountsUIWrapper />
-        {teams.map(team => (
-          <SidebarItem key={team._id}>
-            <Link to={`/teams/${team._id}`}>
-              {team.teamFullName}
-            </Link>
-          </SidebarItem>
-        ))}
+        <SidebarItem>
+          <AccountsUIWrapper />
+        </SidebarItem>
+        <SidebarItem>
+          <Matchup
+            teams={teams}
+            conference="Eastern"
+            division="Metropolitan"
+          />
+        </SidebarItem>
+        <SidebarItem>
+          <Matchup
+            teams={teams}
+            conference="Eastern"
+            division="Atlantic"
+          />
+        </SidebarItem>
+        <SidebarItem>
+          <Matchup
+            teams={teams}
+            conference="Western"
+            division="Central"
+          />
+        </SidebarItem>
+        <SidebarItem>
+          <Matchup
+            teams={teams}
+            conference="Western"
+            division="Pacific"
+          />
+        </SidebarItem>
       </Sidebar>
       <Main>
         <Route exact path="/" render={() => <h1>Hockey Pool!</h1>} />

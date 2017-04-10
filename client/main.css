@@ -4,6 +4,6 @@ body {
   font-family: Arial, sans-serif;
 }
 
-#login {
-  padding: 5px 10px;
+.matchup {
+  padding-bottom: 10px;
 }
