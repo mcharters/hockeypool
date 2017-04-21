@@ -71,12 +71,13 @@ Meteor.methods({
   'draft.start'() {
     // pick draft order
     const users = Meteor.users.find().fetch().map(user => user._id);
-    for (let i = users.length - 1; i >= 0; i -= 1) {
-      const j = Math.floor(Math.random() * (i + 1));
-      const ti = users[i];
-      const tj = users[j];
-      users[i] = tj;
-      users[j] = ti;
+    let m = users.length;
+    let i, t;
+    while (m) {
+      i = Math.floor(Math.random() * m--);
+      t = users[m];
+      users[m] = users[i];
+      users[i] = t;
     }
 
     Draft.update({}, { $set: { started: true, pick: 0, order: users, snake: false, round: 1 } });
