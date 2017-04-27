@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { Meteor } from 'meteor/meteor';
 import { createContainer } from 'meteor/react-meteor-data';
 
 import Teams from '../api/teams.js';
@@ -118,6 +119,9 @@ App.propTypes = {
   teams: PropTypes.arrayOf(PropTypes.object),
 };
 
-export default createContainer(() => ({
-  teams: Teams.find({ playoffTeam: true }).fetch(),
-}), App);
+export default createContainer(() => {
+  Meteor.subscribe('teams');
+  return {
+    teams: Teams.find({ playoffTeam: true }).fetch(),
+  };
+}, App);

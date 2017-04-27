@@ -8,6 +8,10 @@ const Draft = new Mongo.Collection('draft');
 
 export default Draft;
 
+if (Meteor.isServer) {
+  Meteor.publish('draft', () => Draft.find({}));
+}
+
 Meteor.methods({
   'draft.reset'() {
     Teams.remove({});
@@ -72,9 +76,10 @@ Meteor.methods({
     // pick draft order
     const users = Meteor.users.find().fetch().map(user => user._id);
     let m = users.length;
-    let i, t;
+    let i;
+    let t;
     while (m) {
-      i = Math.floor(Math.random() * m--);
+      i = Math.floor(Math.random() * (m -= 1));
       t = users[m];
       users[m] = users[i];
       users[i] = t;

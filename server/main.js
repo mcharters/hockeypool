@@ -7,4 +7,9 @@ Meteor.startup(() => {
   if (Draft.find({}).count() === 0) {
     Meteor.call('draft.reset');
   }
+
+  Meteor.publish(
+    'users',
+    () => Meteor.users.find({}, { fields: { _id: 1, username: 1 } }),
+  );
 });

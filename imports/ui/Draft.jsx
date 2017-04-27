@@ -2,10 +2,9 @@ import React, { PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { createContainer } from 'meteor/react-meteor-data';
 import Draft from '../api/draft.js';
-import Players from '../api/players.js';
-import PlayerListItem from './PlayerListItem.jsx';
+import UserTeam from './UserTeam.jsx';
 
-const DraftUI = ({ draft, currentUser, pickingUser, round, players }) => {
+const DraftUI = ({ draft, currentUser, pickingUser, round }) => {
   if (!currentUser) {
     return <p>Please log in or create an account to draft!</p>;
   }
@@ -29,11 +28,7 @@ const DraftUI = ({ draft, currentUser, pickingUser, round, players }) => {
       <h2>Round {round}</h2>
       {pick}
       <h4>My Team</h4>
-      <ol>
-        {players.map(player => (
-          <PlayerListItem key={player._id} player={player} />
-        ))}
-      </ol>
+      <UserTeam userId={currentUser._id} />
       <p><i>* defense</i></p>
     </div>
   );
@@ -50,7 +45,6 @@ DraftUI.propTypes = {
     username: PropTypes.string,
   }),
   round: PropTypes.number,
-  players: PropTypes.arrayOf(PropTypes.object),
 };
 
 DraftUI.defaultProps = {
@@ -62,6 +56,9 @@ DraftUI.defaultProps = {
 };
 
 export default createContainer(() => {
+  Meteor.subscribe('draft');
+  Meteor.subscribe('users');
+
   const draft = Draft.findOne();
   let pickingUser = null;
   let round = 1;
@@ -76,6 +73,5 @@ export default createContainer(() => {
     currentUser: Meteor.user(),
     pickingUser,
     round,
-    players: Players.find({ userId: Meteor.userId() }, { sort: { selected: 1 } }).fetch(),
   };
 }, DraftUI);

@@ -80,6 +80,9 @@ Team.propTypes = {
 };
 
 export default createContainer(({ team }) => {
+  Meteor.subscribe('players');
+  Meteor.subscribe('draft');
+
   const draft = Draft.findOne();
   let picking = false;
   if (draft && draft.order) {

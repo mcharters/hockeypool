@@ -1,10 +1,9 @@
 import React, { PropTypes } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { createContainer } from 'meteor/react-meteor-data';
-import Players from '../api/players.js';
-import PlayerListItem from './PlayerListItem.jsx';
+import UserTeam from './UserTeam.jsx';
 
-const Admin = ({ users, teams }) => (
+const Admin = ({ users }) => (
   <div className="container">
     <h1>Admin</h1>
     <button
@@ -36,11 +35,7 @@ const Admin = ({ users, teams }) => (
         <tr>
           {users && users.map(user => (
             <td key={user._id}>
-              <ol>
-                {teams[user._id].map(player => (
-                  <PlayerListItem key={player._id} player={player} />
-                ))}
-              </ol>
+              <UserTeam userId={user._id} />
             </td>
           ))}
         </tr>
@@ -51,23 +46,17 @@ const Admin = ({ users, teams }) => (
 
 Admin.propTypes = {
   users: PropTypes.arrayOf(PropTypes.object),
-  teams: PropTypes.objectOf(PropTypes.object),
 };
 
 Admin.defaultProps = {
   users: [],
-  teams: {},
 };
 
 export default createContainer(() => {
+  Meteor.subscribe('users');
   const users = Meteor.users.find().fetch();
-  const teams = {};
-  users.forEach((user) => {
-    teams[user._id] = Players.find({ userId: user._id }, { sort: { selected: 1 } });
-  });
 
   return {
     users,
-    teams,
   };
 }, Admin);
