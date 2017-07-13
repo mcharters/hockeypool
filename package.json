@@ -6,6 +6,9 @@
     "lint": "eslint .",
     "pretest": "npm run lint --silent"
   },
+  "engines": {
+    "node": "4.8.4"
+  },
   "eslintConfig": {
     "extends": "@meteorjs/eslint-config-meteor"
   },
