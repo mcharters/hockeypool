@@ -18,7 +18,7 @@ Meteor.methods({
     Players.remove({});
     Draft.remove({});
 
-    const teamsResult = HTTP.call('GET', 'http://www.nhl.com/stats/rest/grouped/team/basic/season/teamsummary?cayenneExp=seasonId=20162017%20and%20gameTypeId=2&factCayenneExp=gamesPlayed%3E=1&sort=[{%22property%22:%22points%22,%22direction%22:%22DESC%22},{%22property%22:%22wins%22,%22direction%22:%22DESC%22}]');
+    const teamsResult = HTTP.call('GET', 'http://www.nhl.com/stats/rest/team?isAggregate=false&reportType=basic&isGame=false&reportName=teamsummary&sort=[{%22property%22:%22points%22,%22direction%22:%22DESC%22},{%22property%22:%22wins%22,%22direction%22:%22DESC%22}]&cayenneExp=gameTypeId=2%20and%20seasonId%3E=20172018%20and%20seasonId%3C=20172018');
     teamsResult.data.data.forEach((team) => {
       Teams.insert(team);
     });
@@ -61,7 +61,7 @@ Meteor.methods({
     // get players
     const playoffTeams = Teams.find({ playoffTeam: true });
     playoffTeams.forEach((team) => {
-      const playersResult = HTTP.call('GET', `http://www.nhl.com/stats/rest/grouped/skaters/basic/season/skatersummary?cayenneExp=seasonId=20162017%20and%20gameTypeId=2%20and%20teamId=${team.teamId}&factCayenneExp=gamesPlayed%3E=1&sort=[{%22property%22:%22points%22,%22direction%22:%22DESC%22},{%22property%22:%22goals%22,%22direction%22:%22DESC%22},{%22property%22:%22assists%22,%22direction%22:%22DESC%22}]`);
+      const playersResult = HTTP.call('GET', `http://www.nhl.com/stats/rest/skaters?isAggregate=false&reportType=basic&isGame=false&reportName=skatersummary&sort=[{%22property%22:%22points%22,%22direction%22:%22DESC%22},{%22property%22:%22goals%22,%22direction%22:%22DESC%22},{%22property%22:%22assists%22,%22direction%22:%22DESC%22}]&factCayenneExp=gamesPlayed%3E=1&cayenneExp=gameTypeId=2%20and%20seasonId%3E=20172018%20and%20seasonId%3C=20172018%20and%20teamId=${team.teamId}`);
       playersResult.data.data.forEach((player) => {
         const newPlayer = player;
         newPlayer.teamId = team._id;
