@@ -61,67 +61,75 @@ const Secondary = props => (
   </div>
 );
 
-const App = ({ teams }) => (
-  <Router>
-    <Root>
-      <Sidebar>
-        <SidebarItem>
-          <Matchup
-            teams={teams}
-            conference="Eastern"
-            division="Metropolitan"
-          />
-        </SidebarItem>
-        <SidebarItem>
-          <Matchup
-            teams={teams}
-            conference="Eastern"
-            division="Atlantic"
-          />
-        </SidebarItem>
-        <SidebarItem>
-          <Matchup
-            teams={teams}
-            conference="Western"
-            division="Central"
-          />
-        </SidebarItem>
-        <SidebarItem>
-          <Matchup
-            teams={teams}
-            conference="Western"
-            division="Pacific"
-          />
-        </SidebarItem>
-      </Sidebar>
-      <Main>
-        <Route exact path="/" render={() => <h1>Hockey Pool!</h1>} />
-        <Route exact path="/admin" component={Admin} />
-        <Route
-          path="/teams/:teamId"
-          render={({ match }) => (
-            teams && teams.length > 0 &&
-            <Team
-              team={teams.find(team => team.teamAbbrev === match.params.teamId)}
+const App = ({ teams, loading }) => {
+  if (loading) {
+    return <h1>Loading...</h1>;
+  }
+
+  return (
+    <Router>
+      <Root>
+        <Sidebar>
+          <SidebarItem>
+            <Matchup
+              teams={teams}
+              conference="Eastern"
+              division="Metropolitan"
             />
-          )}
-        />
-      </Main>
-      <Secondary>
-        <AccountsUIWrapper />
-        <Draft />
-      </Secondary>
-    </Root>
-  </Router>
-);
+          </SidebarItem>
+          <SidebarItem>
+            <Matchup
+              teams={teams}
+              conference="Eastern"
+              division="Atlantic"
+            />
+          </SidebarItem>
+          <SidebarItem>
+            <Matchup
+              teams={teams}
+              conference="Western"
+              division="Central"
+            />
+          </SidebarItem>
+          <SidebarItem>
+            <Matchup
+              teams={teams}
+              conference="Western"
+              division="Pacific"
+            />
+          </SidebarItem>
+        </Sidebar>
+        <Main>
+          <Route exact path="/" render={() => <h1>Hockey Pool!</h1>} />
+          <Route exact path="/admin" component={Admin} />
+          <Route
+            path="/teams/:teamId"
+            render={({ match }) => (
+              teams && teams.length > 0 &&
+              <Team
+                team={teams.find(team => team.teamAbbrev === match.params.teamId)}
+              />
+            )}
+          />
+        </Main>
+        <Secondary>
+          <AccountsUIWrapper />
+          <Draft />
+        </Secondary>
+      </Root>
+    </Router>
+  );
+};
 
 App.propTypes = {
   teams: PropTypes.arrayOf(PropTypes.object),
+  loading: PropTypes.bool,
 };
 
 export default createContainer(() => {
-  Meteor.subscribe('teams');
+  const teamsHandle = Meteor.subscribe('teams');
   return {
     teams: Teams.find({ playoffTeam: true }).fetch(),
+    loading: !teamsHandle.ready(),
   };
 }, App);

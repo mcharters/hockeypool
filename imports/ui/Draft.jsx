@@ -15,6 +15,15 @@ const DraftUI = ({ draft, currentUser, pickingUser, round }) => {
     return <p>The draft has not started. Sit tight!</p>;
   }
 
+  if (round > Draft.TEAM_SIZE) {
+    return (
+      <div>
+        <h2>Draft Complete!</h2>
+        <UserTeam userId={currentUser._id} />
+      </div>
+    );
+  }
+
   const picking = currentUser._id === pickingUser._id;
   let pick = null;
   if (picking) {
@@ -27,9 +36,7 @@ const DraftUI = ({ draft, currentUser, pickingUser, round }) => {
     <div>
       <h2>Round {round}</h2>
       {pick}
-      <h4>My Team</h4>
       <UserTeam userId={currentUser._id} />
-      <p><i>* defense</i></p>
     </div>
   );
 };

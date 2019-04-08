@@ -5,6 +5,8 @@ import Teams from './teams.js';
 import Players from './players.js';
 
 const Draft = new Mongo.Collection('draft');
+Draft.NUM_D_REQUIRED = 2;
+Draft.TEAM_SIZE = 10;
 
 export default Draft;
 
