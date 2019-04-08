@@ -36,6 +36,7 @@ const DraftUI = ({ draft, currentUser, pickingUser, round }) => {
     <div>
       <h2>Round {round}</h2>
       {pick}
+      <h4>My Team</h4>
       <UserTeam userId={currentUser._id} />
     </div>
   );

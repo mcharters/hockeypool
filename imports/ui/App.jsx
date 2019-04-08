@@ -128,8 +128,10 @@ App.propTypes = {
 
 export default createContainer(() => {
   const teamsHandle = Meteor.subscribe('teams');
+  const playersHandle = Meteor.subscribe('players');
+
   return {
     teams: Teams.find({ playoffTeam: true }).fetch(),
-    loading: !teamsHandle.ready(),
+    loading: !teamsHandle.ready() || !playersHandle.ready(),
   };
 }, App);

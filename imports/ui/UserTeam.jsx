@@ -11,7 +11,6 @@ const UserTeam = ({ players }) => {
 
   return (
     <div>
-      <h4>My Team</h4>
       <ol>
         {players.map(player => (
           <PlayerListItem key={player._id} player={player} />

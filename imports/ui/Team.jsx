@@ -84,6 +84,7 @@ Team.propTypes = {
   players: PropTypes.arrayOf(PropTypes.object).isRequired,
   picked: PropTypes.arrayOf(PropTypes.object).isRequired,
   picking: PropTypes.bool.isRequired,
+  round: PropTypes.number.isRequired,
 };
 
 export default createContainer(({ team }) => {
